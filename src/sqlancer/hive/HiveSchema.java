@@ -15,39 +15,50 @@ import sqlancer.hive.ast.HiveConstant;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class HiveSchema extends AbstractSchema<HiveGlobalState, HiveSchema.HiveTable> {
 
-    public static class HiveLancerDataType {
+//    public static class HiveLancerDataType {
+//
+//        private final Type hiveType;
+//        private final String typeName;
+//
+//        public HiveLancerDataType(Type type) {
+//            this.hiveType = type;
+//            this.typeName = type.getName();
+//        }
+//
+//        public static HiveLancerDataType getRandom() {
+//            return new HiveLancerDataType(
+//                    Randomly.fromOptions(Type.INT_TYPE, Type.STRING_TYPE));
+//        }
+//
+//        public Type getType() {
+//            return hiveType;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return typeName;
+//        }
+//    }
 
-        private final Type hiveType;
-        private final String typeName;
+    public enum HiveDataType {
 
-        public HiveLancerDataType(Type type) {
-            this.hiveType = type;
-            this.typeName = type.getName();
-        }
+        // TODO: support VARCHAR, CHAR, BINARY, ARRAY, MAP, STRUCT, UNIONTYPE...
+        INT, FLOAT, DOUBLE, DECIMAL, TIMESTAMP, DATE, STRING, BOOLEAN;
 
-        public static HiveLancerDataType getRandom() {
-            return new HiveLancerDataType(
-                    Randomly.fromOptions(Type.INT_TYPE, Type.STRING_TYPE));
-        }
-
-        public Type getType() {
-            return hiveType;
-        }
-
-        @Override
-        public String toString() {
-            return typeName;
+        public static HiveDataType getRandomType() {
+            return Randomly.fromList(Arrays.asList(values()));
         }
     }
 
-    public static class HiveColumn extends AbstractTableColumn<HiveTable, HiveLancerDataType> {
+    public static class HiveColumn extends AbstractTableColumn<HiveTable, HiveDataType> {
 
-        public HiveColumn(String name, HiveTable table, HiveLancerDataType type) {
+        public HiveColumn(String name, HiveTable table, HiveDataType type) {
             super(name, table, type);
         }
     }
